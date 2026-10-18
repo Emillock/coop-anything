@@ -2608,6 +2608,37 @@
 - game: 'The Witcher 3: Wild Hunt'
   year: 2015
   engine: REDengine 3
+  project: W3Coop (Witcher Online for Remastered)
+  url: https://github.com/Emillock/witcher3-coop
+  other_urls:
+  - https://github.com/Emillock/WitcherOnline/tree/remastered-5.01
+  kind: fork
+  status: alpha
+  coop_scope:
+    players_visible: true
+    story: false
+    enemies: false
+    world_state: unknown
+    items: per-player
+  players: unknown
+  networking: steam-relay
+  open_source: true
+  last_activity: 2026-10
+  qa: automated
+  notes: Port of Witcher Online to Remastered 5.01 (Steam). Client reads script strings as UTF-8, scripts moved
+    to the 5.x API, Custom Player Characters and Chill Out replaced by stand-ins, Gwent duels off. w3relay carries
+    the traffic over Steam (Spacewar, friends-only lobby), so nobody forwards ports. Two automated two-client
+    tests pass on one PC (players visible, movement, also through the relay over a mock Steam); a join between
+    two real Steam accounts, chat, emotes and party sync are untested. Pre-release v0.1.0. Port GPL-3.0, relay
+    and harness MIT.
+  sources:
+  - https://github.com/Emillock/witcher3-coop
+  - https://github.com/Emillock/witcher3-coop/releases/tag/v0.1.0
+  - https://github.com/Emillock/WitcherOnline/tree/remastered-5.01
+  checked: 2026-10-18
+- game: 'The Witcher 3: Wild Hunt'
+  year: 2015
+  engine: REDengine 3
   project: WitcherMMO
   url: https://github.com/eofim/WitcherMMO
   kind: fork

@@ -4,17 +4,18 @@
 |---|---|
 | Engine | REDengine 3 (WitcherScript source + closed native exe) |
 | Versions tested | Steam, Remastered patch 5.01 (exe 5.0.0.1048522, build 25773555, DX12 only) |
-| Projects | Witcher Online, WitcherMMO, w3m, Witcher3-Multiplayer, Witcher3-MP ([directory](../../DIRECTORY.md)) |
-| QA level | public projects on 5.x: none. A local 5.01 port of Witcher Online: automated (2 tests, see QA) |
+| Projects | Witcher Online, W3Coop (its 5.01 port), WitcherMMO, w3m, Witcher3-Multiplayer, Witcher3-MP ([directory](../../DIRECTORY.md)) |
+| QA level | W3Coop (Witcher Online on 5.01): automated (2 tests, see QA). Other projects on 5.x: none |
 | Last updated | 2026-10-18 |
 
 ## Where things stand
 
 Witcher Online is the only usable project: players see each other, chat, ride together and share
 dialog choices in a party, but enemies, NPCs and quests are not shared. It supports 4.04 only; the
-Remastered update (5.0, September 2026) breaks its public build. A local port to 5.01 (not yet
-published) compiles and passes two automated two-client tests (players visible, movement). Story
-co-op with shared enemies and quests does not exist for any version yet.
+Remastered update (5.0, September 2026) breaks its public build. W3Coop, a port to 5.01 with a Steam
+relay (pre-release v0.1.0), compiles and passes two automated two-client tests (players visible,
+movement); it is not yet tested between two real Steam accounts. Story co-op with shared enemies and
+quests does not exist for any version yet.
 
 ## Existing work
 
@@ -23,6 +24,10 @@ co-op with shared enemies and quests does not exist for any version yet.
   [WitcherNativeBridge](https://github.com/rejuvenate7/WitcherNativeBridge), MIT, updated for 5.01 on
   2026-10-08) + Java UDP server. Requires Custom Player Characters, Chill Out and Shared Imports
   (Nexus only, no public source).
+- [W3Coop](https://github.com/Emillock/witcher3-coop): Witcher Online ported to 5.01
+  ([fork, branch `remastered-5.01`](https://github.com/Emillock/WitcherOnline/tree/remastered-5.01)),
+  plus a Steam relay, a player package and the test harness described below. Built in this playbook's
+  workflow.
 - [WitcherMMO](https://github.com/eofim/WitcherMMO): a rename fork of Witcher Online; its NPC/quest
   goals are not implemented.
 - [w3m](https://github.com/momo5502/w3m) (momo5502): native hooks at hardcoded addresses of a
@@ -59,7 +64,7 @@ co-op with shared enemies and quests does not exist for any version yet.
 - **Single instance**: named mutex `cdprojekt_red_the_witcher_3_wild_hunt` (CreateMutexA); the second
   copy shows "game is already launched" and exits.
 
-## What we changed (local port, unpublished)
+## What the 5.01 port changes
 
 - Client: read and write script strings as UTF-8 on 5.x (UTF-16 on 4.x), optional
   `WO_USERNAME`/`WO_SERVER_IP`/`WO_SERVER_PORT` overrides for several instances on one install.
@@ -95,8 +100,11 @@ tested yet.
 
 ## How to play
 
-Nothing public yet: the port and relay are packaged locally (copy into the game folder, run
-"Host co-op" or "Join co-op") and still need a real two-account test before publishing.
+Download `W3Coop-0.1.0.zip` from the
+[W3Coop releases](https://github.com/Emillock/witcher3-coop/releases) and copy its contents into the
+game folder. The host runs `bin\w3coop\Host co-op.cmd` (needs Java 21+) and invites friends; friends run
+`Join co-op.cmd`; then everyone starts the game and loads a save. It is a pre-release: the join
+between two real Steam accounts is not tested yet.
 
 ## Known issues
 
