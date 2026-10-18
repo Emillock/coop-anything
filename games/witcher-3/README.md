@@ -83,10 +83,20 @@ bot's PASS line.
 |---|---|---|
 | `see_each_other` | each client spawns the other player's ghost at the networked position | PASS (2 clients) |
 | `movement` | one player teleports back and forth; the other's copy of the ghost lands within 2 m of the networked position after each move | PASS (2 clients, 4 moves seen) |
+| `movement --relay` | same, with the second client connected only through the Steam relay (host + join relay over a mock `steam_api64.dll`) | PASS (2 clients, also against the built player package) |
+| relay self-test | 20 UDP packets through host and join relays, game client starting 25 s late; a Steam user outside the lobby must not reach the server | PASS |
+
+Steam relay ("w3relay", the HXCoop pattern from
+[networking-steam-spacewar.md](../../playbook/networking-steam-spacewar.md)): a helper exe runs as
+Spacewar (AppID 480), creates a friends-only lobby and carries Witcher Online's UDP packets over
+Steam, so nobody types an IP or forwards ports. It loads the game's own `steam_api64.dll`. A real-Steam
+smoke test (init, lobby create, clean exit) passed; a join between two real Steam accounts is not
+tested yet.
 
 ## How to play
 
-Nothing to install yet: the port is not published.
+Nothing public yet: the port and relay are packaged locally (copy into the game folder, run
+"Host co-op" or "Join co-op") and still need a real two-account test before publishing.
 
 ## Known issues
 
@@ -97,7 +107,7 @@ Nothing to install yet: the port is not published.
 
 ## Next steps
 
-- Steam relay transport (no port forwarding), packaging, more bot tests (chat, emotes, party sync).
+- A real two-account test of the relay; more bot tests (chat, emotes, party sync).
 - A 5.x Gwent board for duels.
 - Shared enemies (host authority over NPC state, damage forwarded to the host) and quest progress
   (facts sync): not started anywhere.

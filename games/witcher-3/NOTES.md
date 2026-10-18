@@ -208,3 +208,31 @@ Goal from here: port Witcher Online to 5.01, then work toward shared enemies and
 - First-run screens an unattended bot must handle: StartupMoviesMenu, RecapMoviesMenu (about 3 min),
   StartupExperienceMenu (CDPR account link, then telemetry consent; tests close it without answering
   so no consent is stored), the one-time "skill points reset" dialog for 4.04 saves.
+
+## Session 2026-10-18 (night): Steam relay and player package
+
+### Observations
+
+- The game's own `bin\x64_dx12\steam_api64.dll` (10.87.46.89) exports `SteamAPI_InitFlat`, manual
+  dispatch and the `SteamUser_v023`, `SteamMatchmaking_v009`, `SteamFriends_v018`,
+  `SteamNetworkingMessages_SteamAPI_v002` interfaces, so a separate Spacewar (480) relay process can
+  load it; nothing to redistribute.
+- `w3relay` (HXCoop pattern): host gives each lobby member a local UDP socket to the Witcher Online
+  server; join binds 127.0.0.1 and forwards to the lobby owner. Witcher Online needs no change: its
+  client just connects to 127.0.0.1.
+- Relay self-test over a mock `steam_api64.dll` PASS, including a game client starting 25 s late and a
+  non-member whose traffic must not reach the server.
+- First relay version failed the two-client test: the host only answered keep-alives from players that
+  had sent game data, so the joiner (still loading) saw 20 s of silence and quit. Fixed (host tracks all
+  members on the control channel; joiner rejoins instead of exiting).
+- Real Steam: init as 480, lobby creation and clean shutdown work. `LobbyCreated` arrives twice
+  (call result and broadcast); made idempotent.
+- `movement --relay` PASS (second client only through the relays), also with the built player
+  package installed byte for byte.
+- Player package (179 MB): ported mod + stand-ins, DLC, ASI loader, bridge, client, relay, server jar,
+  Host/Join launchers, licenses and source of the GPL parts.
+
+### Unknowns
+
+- A join between two real Steam accounts on two PCs (relay latency, invite and Join Game flow).
+- Chat, emotes, horses, party/dialog sync on 5.01 (not exercised by the bots yet).
